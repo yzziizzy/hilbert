@@ -2,7 +2,7 @@
 
 
 
-gcc -o hilbert hilbert.c
+gcc -o hilbert hilbert.c morton.c
 
 
 

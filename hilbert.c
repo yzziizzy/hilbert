@@ -2,7 +2,10 @@
 #include <stdio.h>
 #include <stdint.h>
 
+
+#include "morton.h"
 #include "hilbert.h"
+
 
 
 
@@ -39,7 +42,7 @@ void printLeaf(Leaf* l) {
 
 
 
-void setBit(Leaf* l, int bit, int val) {
+void setLeafBit(Leaf* l, int bit, int val) {
 	
 	uint64_t i, j, v;
 	
@@ -47,7 +50,7 @@ void setBit(Leaf* l, int bit, int val) {
 	i = bit / 64;
 	j = bit % 64;
 	
-	printf(" i: %d, j: %d \n", i,j);
+	printf(" i: %lud, j: %lud \n", i,j);
 	
 	
 	v = val & 1;
@@ -57,7 +60,7 @@ void setBit(Leaf* l, int bit, int val) {
 }
 
 
-int getBit(Leaf* l, int bit) {
+int getLeafBit(Leaf* l, int bit) {
 	
 	uint64_t i, j, v;
 	
@@ -73,6 +76,53 @@ int getBit(Leaf* l, int bit) {
 
 
 
+// edgeSize = 2 ^ edgeBitSizeExp
+// allocSize = edgesize ^ 3
+Bitfield* allocBitfield(int edgeByteSizeExp, int bitsPerCell) {
+	int esz, ac;
+	Bitfield* bf;
+	
+	
+	esz = 1 << edgeByteSizeExp;
+	
+	ac = (esz * esz * esz) * bitsPerCell;
+	
+	bf = calloc(1, sizeof(Bitfield) + (ac * 8));
+	
+	bf->allocSize = ac;
+	bf->edgeSize = esz * 2; // cuberoot(8) == 2
+	bf->bitsPerCell = bitsPerCell;
+	
+	printf(" %d bytes allocated \n", ac);
+	
+	
+	return bf;
+}
+
+
+
+
+void getBit(Bitfield* bf, int x, int y, int z, int v) {
+	
+	
+	
+	
+}
+
+void setBit(Bitfield* bf, int x, int y, int z, int v) {
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
 
 
 
@@ -81,8 +131,11 @@ int main(int argc, char* argv[]) {
 	
 	
 	Leaf* l;
+	Bitfield* bf;
 	
 	
+	initMortonLUT();
+	/*
 	l = allocLeaf();
 	
 	setBit(l, 2, 1);
@@ -93,6 +146,9 @@ int main(int argc, char* argv[]) {
 	
 	printf(" lol: %d\n", getBit(l, 2));
 	printf(" lol: %d\n", getBit(l, 3));
+	*/
+	
+	bf = allocBitfield(8, 2);
 	
 	
 	
